@@ -1,0 +1,96 @@
+.modal {
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-dialog {
+    max-width: 800px;
+    margin: 30px auto;
+  }
+  
+  .modal-content {
+    padding: 20px;
+    background-color: #fff; 
+    color: #333; 
+    width: 900px; 
+}
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    background-color: #f8f9fa;
+    color: #333;
+  }
+  
+  .form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  .dropdown-menu {
+    width: 100%;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    max-height: 200px;
+    overflow-y: auto;
+    position: absolute;
+    background-color: #fff; 
+    color: #333; 
+  }
+  
+  .dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .btn-primary {
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #007bff; 
+    border-color: #007bff;
+    color: #fff; 
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+  }
+  
+  label {
+    color: #555; 
+  }
+  
+  .form-check-label {
+    color: #555; 
+  }
+  
+  .modal-header {
+    background-color: #f7f7f7; 
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .modal-title {
+    color: #333; /* Title text color */
+  }
+  
+  .modal-body {
+    background-color: #fff; /* Body background color */
+  }
+  
+  .modal-footer {
+    background-color: #f7f7f7; 
+    border-top: 1px solid #e9ecef;
+  }
+  
