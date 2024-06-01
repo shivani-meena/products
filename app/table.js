@@ -1,12 +1,15 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import Modal from './modal';
 import Cookies from 'js-cookie';
 
-function Table() {
+function Table({ onLogout }) {
   const [entries, setEntries] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [selectedEntry, setSelectedEntry] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
     const themePreference = Cookies.get('theme');
@@ -25,18 +28,28 @@ function Table() {
     Cookies.set('theme', newTheme);
   };
 
-  const toggleModal = () => {
+  const toggleModal = (entry = null, editMode = false) => {
     setShowModal(!showModal);
+    setSelectedEntry(entry);
+    setIsEditMode(editMode);
   };
 
   const handleFormSubmit = (newEntry) => {
-    const updatedEntries = [...entries, newEntry];
-    setEntries(updatedEntries);
-    setFilteredProducts(updatedEntries);
+    if (isEditMode) {
+      const updatedEntries = entries.map(entry =>
+        entry === selectedEntry ? newEntry : entry
+      );
+      setEntries(updatedEntries);
+      setFilteredProducts(updatedEntries);
+    } else {
+      const updatedEntries = [...entries, newEntry];
+      setEntries(updatedEntries);
+      setFilteredProducts(updatedEntries);
+    }
     toggleModal();
   };
 
-  function filterProducts(status) {
+  const filterProducts = (status) => {
     let filtered = entries.filter(function (entry) {
       if (status === 'active') {
         return !entry.isPaid;
@@ -45,20 +58,20 @@ function Table() {
       }
     });
     setFilteredProducts(filtered);
-  }
+  };
 
   return (
     <>
       <div className="box">
         <button onClick={toggleTheme} className="theme-toggle-button">
-          {isDarkTheme ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+          {isDarkTheme ? 'Switch Theme' : 'Switch Theme'}
         </button>
         <div className='buttons'>
           <button className="active" onClick={() => filterProducts('active')}>Active sale</button>
           <button className="completed" onClick={() => filterProducts('completed')}>Completed sale</button>
-          <button className="toggleModal sale-order" onClick={toggleModal}>+ sale-order</button>
+          <button className="toggleModal sale-order" onClick={() => toggleModal()}>+ sale-order</button>
         </div>
-      </div >
+      </div>
       <div className="table-container">
         <table className="table table-bordered table-striped">
           <thead className='thead-dark'>
@@ -79,16 +92,18 @@ function Table() {
                 <td>{entry.quantity}</td>
                 <td>{entry.price * entry.quantity}</td>
                 <td>{entry.isPaid ? 'Yes' : 'No'}</td>
-                <td className='edit'>...</td>
+                <td>
+                  <button className='edit' onClick={() => toggleModal(entry, true)}>Edit</button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
+
       </div>
-      {showModal && <Modal handleFormSubmit={handleFormSubmit} />}
+      {showModal && <Modal handleFormSubmit={handleFormSubmit} entry={selectedEntry} editMode={isEditMode} />}
     </>
   );
 }
 
 export default Table;
-

@@ -1,15 +1,36 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { products, customers } from './data';
 import './modal.css';
 
-function Modal({ handleFormSubmit }) {
+function Modal({ handleFormSubmit, entry, editMode }) {
     const [selectedCustomer, setSelectedCustomer] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [quantity, setQuantity] = useState('');
     const [price, setPrice] = useState('');
     const [isPaid, setIsPaid] = useState(false);
+
+    useEffect(() => {
+        if (editMode && entry) {
+            setSelectedCustomer({
+                value: entry.customer.customer_profile.id,
+                label: entry.customer.customer_profile.name
+            });
+            setSelectedProduct({
+                value: entry.products.name,
+                label: entry.products.name
+            });
+            setQuantity(entry.quantity);
+            setPrice(entry.price);
+            setIsPaid(entry.isPaid);
+        } else {
+            setSelectedCustomer(null);
+            setSelectedProduct(null);
+            setQuantity('');
+            setPrice('');
+            setIsPaid(false);
+        }
+    }, [editMode, entry]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -20,8 +41,7 @@ function Modal({ handleFormSubmit }) {
         }
 
         const customer = customers.find(c => c.customer_profile.id === selectedCustomer.value);
-
-        const productDetails = products.find(p => p.name === selectedProduct);
+        const productDetails = products.find(p => p.name === selectedProduct.value);
 
         if (!productDetails) {
             alert('Product not found');
@@ -54,7 +74,7 @@ function Modal({ handleFormSubmit }) {
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Add Entry</h5>
+                        <h5 className="modal-title">{editMode ? 'Edit Entry' : 'Add Entry'}</h5>
                     </div>
                     <div className="modal-body">
                         <form onSubmit={handleSubmit}>
@@ -73,8 +93,8 @@ function Modal({ handleFormSubmit }) {
                                 <Select
                                     id="productSelect"
                                     options={productOptions}
-                                    value={productOptions.find(option => option.value === selectedProduct)}
-                                    onChange={(selectedOption) => setSelectedProduct(selectedOption.value)}
+                                    value={selectedProduct}
+                                    onChange={setSelectedProduct}
                                     placeholder="Select product..."
                                 />
                             </div>

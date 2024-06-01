@@ -37,6 +37,11 @@ input {
   margin-top: 15px;
 }
 
+.edit{
+  border: none;
+  color: #000000;
+}
+
 .box {
   margin: auto;
   margin-bottom: 50px;
